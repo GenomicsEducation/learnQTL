@@ -1,4 +1,4 @@
-## myQTL: Aplicación Shiny para visualizar y comprender el efecto de un QTL sobre un rasgo cuantitativo.
+## myQTL@ app: Aplicación Shiny para visualizar y comprender el efecto de un QTL sobre un rasgo cuantitativo.
 
 ## AUTORES
 
@@ -23,5 +23,5 @@ Diploma de estudios avanzados por la Universidad de la Palmas de Gran Canaria, E
 
 ## Interpretación.
 
-
-© myQTL es una marca registrada de la [Pontificia Universidad Católica de Valparaíso](https://genomics.pucv.cl/)
+Shiny© es una marca registrada de RStudio, PBC. 
+myQTL© es una marca registrada de la [Pontificia Universidad Católica de Valparaíso](https://genomics.pucv.cl/)
