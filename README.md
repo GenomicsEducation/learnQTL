@@ -16,10 +16,12 @@ Investigadora post-doctoral de la Pontificia Universidad Católica de Valparaís
 Biólogo Marino por la Universidad de Valparaíso, Chile.   
 Diploma de estudios avanzados por la Universidad de la Palmas de Gran Canaria, España.   
 
-© myQTL es una marca registrada de la [Pontificia Universidad Católica de Valparaíso](https://genomics.pucv.cl/)
 
 ## ¿Qué es un QTL?
 
 ## Simulación de QTL.
 
 ## Interpretación.
+
+
+© myQTL es una marca registrada de la [Pontificia Universidad Católica de Valparaíso](https://genomics.pucv.cl/)
