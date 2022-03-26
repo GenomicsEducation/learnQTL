@@ -23,5 +23,8 @@ Diploma de estudios avanzados por la Universidad de la Palmas de Gran Canaria, E
 
 ## Interpretación.
 
+## Uso
+Esta aplicación tiene propósitos docentes.
+
 Shiny© es una marca registrada de [RStudio, PBC](https://www.rstudio.com/products/shinyapps/).   
 myQTL© es una marca registrada de la [Pontificia Universidad Católica de Valparaíso](https://genomics.pucv.cl/)
