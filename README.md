@@ -1,4 +1,4 @@
-## learnQTL©: Aplicación Shiny© para visualizar y comprender el efecto de un QTL sobre un rasgo cuantitativo.
+## learnQTL: Aplicación Shiny© para visualizar y comprender el efecto de un QTL sobre un rasgo cuantitativo.
 
 ## Desarroladores.
 
