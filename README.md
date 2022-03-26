@@ -27,4 +27,9 @@ Diploma de estudios avanzados por la Universidad de la Palmas de Gran Canaria, E
 ## Uso
 Esta aplicación tiene propósitos docentes.
 
-Shiny© es una marca registrada de [RStudio, PBC](https://www.rstudio.com/products/shinyapps/).   
+## Licencia
+Shiny© es una marca registrada de [RStudio, PBC](https://www.rstudio.com/products/shinyapps/).  
+
+This app is distributed under GPL-3 (GNU GENERAL PUBLIC LICENSE version 3). This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License version 3 (GPL-3) as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details (https://www.gnu.org/licenses/gpl.txt).
