@@ -1,6 +1,6 @@
-## myQTL@ app: Aplicación Shiny para visualizar y comprender el efecto de un QTL sobre un rasgo cuantitativo.
+## myQTL© app: Aplicación Shiny© para visualizar y comprender el efecto de un QTL sobre un rasgo cuantitativo.
 
-## AUTORES
+## Autores.
 
 [**JOSÉ ANDRÉS GALLARDO MATUS**](https://github.com/DrJoseGallardo)  
 Doctor en Ciencias por la Universidad de Chile, Chile.  
@@ -23,5 +23,5 @@ Diploma de estudios avanzados por la Universidad de la Palmas de Gran Canaria, E
 
 ## Interpretación.
 
-Shiny© es una marca registrada de RStudio, PBC. 
+Shiny© es una marca registrada de [RStudio, PBC](https://www.rstudio.com/products/shinyapps/).   
 myQTL© es una marca registrada de la [Pontificia Universidad Católica de Valparaíso](https://genomics.pucv.cl/)
