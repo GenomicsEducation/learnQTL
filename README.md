@@ -1,6 +1,6 @@
-# myQTL: Aplicación Shiny para visualizar y comprender el efecto de un QTL sobre un rasgo cuantitativo.
+## myQTL: Aplicación Shiny para visualizar y comprender el efecto de un QTL sobre un rasgo cuantitativo.
 
-# AUTORES
+## AUTORES
 
 [**JOSÉ ANDRÉS GALLARDO MATUS**](https://github.com/DrJoseGallardo)  
 Doctor en Ciencias por la Universidad de Chile, Chile.  
