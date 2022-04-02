@@ -1,0 +1,281 @@
+---
+title: "Guía fundamentos de genética cuantitativa"
+subtitle: 'Curso Genética y Genómica en Producción Animal'
+author:
+ name: Dr. José A. Gallardo.
+ affiliation: Pontificia Universidad Católica de Valparaíso
+ email: <jose.gallardo@pucv.cl>
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: hide
+  word_document: default
+  pdf_document: default
+---
+
+<style>
+#TOC {
+  color: black;
+  font-familiy: Calibri;
+  font-size: 14px;
+  border-color: #708090; 
+}
+body {
+   color: black;
+   font-familiy: Calibri;
+}
+
+pre {
+  color: black;
+  background-color: #F8F8FF;
+}
+# header {
+  color: #800000;
+  font-familiy: Calibri;
+  background-color: #F5F5F5;
+  opacity: 0.8;
+  font-size: 16px;
+}
+</style>
+
+### Objetivos de aprendizaje
+
+El objetivo general del trabajo práctico es comprender principios fundamentales de la genética cuantitativa usando la librería **learnPopGen** y otras librerías.
+
+Objetivos específicos
+
+Simular la herencia poligénica y la selección sobre un rasgo cuantitativo. 
+
+Realizar un test de asociación entre un marcador y un rasgo cuantitativo.
+
+### Librerías y funciones clave
+
+**learnPopGen**: Permite realizar análisis numérico y simulaciones con el propósito de comprender principios básicos de genética de poblaciones y evolución (Revell et al. 2019).
+
+**stats**: R statistical functions.
+
+**MASS**:Contiene funciones de apoyo para trabajar con el libro de Venables and Ripley llamado Modern Applied Statistics with S (2002).
+
+**phenotype.freq()**: Computes the phenotypic trait distribution for a polygenic trait. Can be used to demonstrate that the phenotypic distribution of a polygenic trait will tend to normality as the number of loci is increased, regardless of the allele frequencies at each locus. 
+
+**phenotype.selection()**: Computes the change in the phenotypic trait distribution through time under natural selection. Can be used to show that natural selection on a polygenic trait can move the value of the trait well beyond its original distribution in the population.
+
+**summary()**: Resumen estadístico de los datos.
+
+**str()**: Estructura de un objeto  
+
+**table()**: Tabla de distribución de frecuencia  
+
+**plot()**: Gráfica x-y de puntos"p", lineas "l" o ambas "b".  
+
+**boxplot()**: Gráfica de cajas y bigotes.  
+
+**density()**: Es usada para estimar la función de densidad de una variable cuantitativa.
+
+**rnorm(n, mean, sd)**: Genera (n) números aleatorios con una distribución normal con promedio (mean) y desviación estandar (sd).
+
+**rbinom(n, size, prob)**: Genera (n) números aleatorios para la distribución binomial con parámetros tamaño (size) y probabilidad de éxito de un ensayo (probe).
+
+**lm()**: Es usada para ajustar modelos de regresión lineal.
+
+
+### Instruciones generales
+
+1.- Resuelva los ejercicios propuestos en el siguiente proyecto colaborativo de Rstudio cloud [Genetica cuantitativa](https://rstudio.cloud/spaces/132848/project/2497620).
+
+2.- Para cada ejercicio cree un bloque de códigos diferente. Use **set.seed(123)** para que los resultados de simulación sean comparables.
+
+3.- Compile el código con el botón Knit y guardelo en formato html.
+
+4.- Comparta su reporte en la carpeta Drive en la sección tareas [TAREAS](https://drive.google.com/drive/folders/1WDWtrSFWUi8n03QgjwT0bGQ1NW90t6ri?usp=sharing)
+
+### Actividades
+
+### **Actividad 1.** **Elaborar archivo Rmarkdown**
+
+Elabore un archivo o file con extensión **.Rmd** y configurelo para exportar el resultado como un documento dinámico **html**.
+
+Luego guarde inmediatamente su script como **tarea_cuantitativa_nombre_apellido.Rmd**. Al finalizar la actividad deberá exportar y almacenar este **_script_** en la carpeta drive de tareas.
+
+
+### **Actividad 2.** **Configuración del reporte**
+
+En el primer bloque de códigos o **chunk** configure los comandos de la siguiente manera *knitr::opts_chunk$set(echo = TRUE)* y cargue la librerías **MASS**, **learnPopGen** y **stats** usando la función library().
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stats)
+library(MASS)
+library(learnPopGen)
+```
+
+### **Actividad 3.** **Borrar información de la plantilla**
+
+Borre los bloques de códigos R que se generan automáticamente con cada archivo .Rmd y reemplacelos por nuevos bloques de códigos con el botón verde **+C** que se encuentra en la parte superior del panel de códigos. 
+
+ Sea ordenado y documente su reporte adecuadamente.
+
+### **Actividad 4.** **Simulación herencia poligénica**
+
+En esta actividad se simulará los la distribución de frecuencia de un rasgo cuantitativo que es controlado por un número creciente de genes. Para simplificar la simulación se asume que cada locus tiene el mismo **efecto de la sustitución de un gen** sobre el rasgo cuantitativo (cada alelo tiene el mismo efecto sobre el fenotipo) y que la frecuencia inicial de todos los genes es 0.5.
+
+El siguiente código simula la frecuencia de fenotipos de un rasgo controlado por dos genes cada uno con dos alelos. 
+
+```{r, echo=TRUE}
+nloci=2
+phenotype.freq(nloci=2, p=c(0.5,0.5), effect=1/nloci)
+```
+a) Simule un incremento progresivo del número de loci de 3 a 10.
+
+¿Que forma o distribución toma el histograma?
+
+```{r Herencia poligenica 3, fig.cap="Distribución de un rasgo poligénico controlado por 3 genes."}
+nloci=3
+phenotype.freq(nloci=nloci, p=NULL, effect=1/nloci)
+```
+
+```{r Herencia poligenica 5, fig.cap="Distribución de un rasgo poligénico controlado por 5 genes."}
+nloci=5
+phenotype.freq(nloci=nloci, p=NULL, effect=1/nloci)
+```
+
+
+```{r Herencia poligenica 10, fig.cap="Distribución de un rasgo poligénico controlado por 10 genes."}
+
+nloci=10
+phenotype.freq(nloci=nloci, p=NULL, effect=1/nloci)
+```
+
+
+
+### **Actividad 5.** Simulación de selección de un rasgo cuantitativo.
+
+En este ejemplo se simulará el efecto de la selección sobre la distribución de frecuencia de un rasgo cuantitativo controlado por 10 genes. El primer histograma representa la población base sin selección y la segunda corresponde a la población seleccionada.
+
+```{r}
+
+par(mfrow = c(1, 2))
+phenotype.selection(nloci=10, p=NULL, effect=1/nloci, beta=10, ngen=2)
+
+```
+
+a) Simule un incremento del numero de generaciones de 2 a 9 y responda.
+
+¿Que forma o distribución toma el histograma en la generación 1, 3, 5 y 9?
+¿Nota algún cambio en el promedio de la población?
+Si ocurre un cambio: ¿A que se debe ese cambio? ¿La frecuencia de los genes permanece constante entre la generación 1 y la 9?
+
+
+```{r}
+par(mfrow = c(3, 3))
+phenotype.selection(nloci=10, p=NULL, effect=1/nloci, beta=2, ngen=9)
+```
+
+
+### **Actividad 6.** Simulación de un rasgo cuantitativo.
+
+a) Revise como usar la función **rnorm()** usando el siguiente comando **help(rnorm)**. Luego cree un objeto denominado **weight** y almacene en el una muestra de 1000 salmones con peso 5500 gramos y desviación estandar de 800 gramos.
+
+```{r}
+weight <- rnorm(1000, 5500, 800) # n, mean and variance (salmon weight)
+```
+
+b) Explore el objeto weight con las funciones **lenght()**, **head()**, **tail()**, **mean()**, **sd()** y **range()**.
+
+```{r}
+length(weight)
+head(weight)
+tail(weight)
+mean(weight)
+sd(weight)
+range(weight)
+```
+
+c) Elabore un histograma  con la función **hist()**. Luego determine la función de densidad de la variable cuantitativa usando el comando **density()**, use el argumento *kernel = c("gaussian")* y *adjust=2* dentro de densidad. Luego grafique la densidad usando el comando **plot()**.
+
+```{r}
+par(mfrow=c(1,2)) 
+hist(weight)
+plot(density(weight, adjust = 2, kernel = "gaussian"), main = "", xlab = "weight (g)", lwd = 2)
+```
+
+
+### **Actividad 7.** Simulación de un SNP (polimorfismos de nucleótido único)
+
+a) Cree un objeto llamado **snp** y simule en el los tres genotipos que deriban de un SNP usando la función **rbinom()**. Esta función requiere tres parámetros: n (el tamaño de la muestra), size (que representará el numero de alelos del SNP) y prob (que representará la frecuencia del alelo menor). Suponga como en el caso anterior 1000 peces, 2 alelos del SNP y una frecuencia del alelo menor de 0.4. 
+
+```{r}
+snp     <- rbinom(1000, 2, 0.4)
+```
+
+b) Explore el objeto **snp** con **head()** y **tail()** y note que los genotipos se codificaron como 0, 1 y 2. Donde cero representa el homocigoto de mayor frecuencia, 1 el heterocigoto y 2 el homocigoto de menor frecuencia. Transforme el objeto snp a factor con el siguiente comando **as.factor()** y usando la función **table()** determine la frecuencia de genotipos.
+
+```{r}
+snp1     <- as.factor(rbinom(1000, 2, 0.4))
+table(snp1)
+```
+
+### **Actividad 8.** Simulación de un locus que afecta a un rasgo cuantitativo (QTL en ingles).
+
+a) Fenotipo promedio con dominancia completa: Suponga un SNP con dos alelos y con dominancia completa que afecta al peso del salmon weight. Cree un objeto llamado **w.means** con el promedio de peso para los tres genotipos 3000 g, 6000 g y 6000 g. Cree un objeto llamado **w.sd** con la desviación estandar 800 y suponga que es la misma para cada genotipo.
+
+```{r}
+w.means <- c(3000, 6000, 6000) # Complete dominance
+w.sd    <- 800
+```
+
+b) Copie la siguiente funcion en su proyecto. Esta función creará un objeto llamado **w** con una muestra aleatoria de 1000 peces que cada pez toma un valor de una muestra aleatoria de los los 3 genotipos del objeto **snp**
+
+```{r}
+w <- rnorm(1000, w.means[factor(snp)], w.sd)
+```
+
+c) Cree un data.frame llamado **snp.w** uniendo el objeto **snp** y el objeto **w** con la función **cbind()**. Explore el objeto **snp.w** con **summary()**
+
+```{r}
+snp.w <- data.frame(cbind(snp, w))
+summary(snp.w)
+```
+
+d) Note que la columna de genotipos snp fue transformada a número, por lo que antes de continuar debe transformarlos otra vez a factor con el comando **as.factor()**. Compruebe que se transformó a factor con **table()** o **summary()**
+
+```{r}
+snp.w$snp <- as.factor(snp.w$snp)
+summary(snp.w)
+table(snp.w$snp)
+```
+
+e) Realice un inspeción visual de la relación entre los genotipos y fenotipos con la función **plot()**, use **snp.w$w** como variable respuesta y **snp.w$snp** como variable explicativa.
+
+```{r}
+plot(snp.w$snp,snp.w$w,main="Variación de fenotipos en función de los genotipos", xlab="alelo de referencia")
+```
+
+f) Cree un objeto llamado **lm.qtl** y coloque en el un modelo de regresión lineal usando el siguiente comando **lm(w~snp)** donde **~** signifivca *modelado por*. Visualice la relación lineal usando **plot(snp,w)**. Agregue la linea de regresión usando **abline()**
+
+```{r}
+lm.qtl <- lm(w ~ snp)
+plot(snp,w,main="Relación lineal de fenotipos y genotipos", xlab = "alelo de referencia")
+abline(lm(w~snp), cex=0.9, col="red")
+```
+
+g) Finalmente, evalue el efecto de la sustitución del gen y la significancia del efecto del snp sobre el rasgo cuantitativo usando la función **summary()** y la función **anova()** sobre el modelo lineal **lm.qtl**.
+
+```{r}
+anova(lm.qtl)
+summary(lm.qtl)
+```
+
+### Tarea
+
+a) Repita la actividad 7 y 8 pero ahora cambie la frecuencia del gen a un 0.9. Compare los p-value del anova y el efecto del snp.
+
+b) simule un qtl con sobredominancia, un qtl con un efecto 100% aditivo y un snp sin efecto sobre el rasgo cuantitativo. Compare los p-value del anova y el efecto del snp.
+
+### Referencias
+
+**Revell L.J.**. learnPopGen: An R package for population genetic simulation and numerical analysis. 2019.
+Ecology and Evolution Volume 9, Issue 14. https://doi.org/10.1002/ece3.5412

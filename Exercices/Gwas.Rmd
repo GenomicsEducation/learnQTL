@@ -1,0 +1,181 @@
+---
+title: "GWAS"
+author: "Jose gallardo"
+date: "21/7/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("rrBLUP")
+library(ggplot2)
+```
+
+
+```{r}
+# Simular QT tiempo a la muerte (d)
+help(rnorm)
+QT <- rnorm(1000, 25, 1) # n, mean and variance (time to died)
+# basic stat
+mean(QT)
+sd(QT)
+```
+
+```{r}
+# Plot the distribution for QT
+par(mfrow=c(1,2)) 
+hist(QT)
+plot(density(QT, adjust = 3), main = "", xlab = "Time to died (d)",
+     lwd = 2)
+```
+
+
+```{r}
+#Simular QTL de resistencia 
+QTR.means <- c(20, 30, 30) # Complete dominance
+QTR.sd    <- 1
+
+# Generate a QTL con frecuencia del alelo resistente de 0.4
+help(rbinom)
+QTL     <- rbinom(1000, 2, 0.4) # n, size and prob
+```
+
+```{r}
+# Generate PHENO given the GENO and bind to data frame
+QTR        <- rnorm(1000, QTR.means[factor(QTL)], QTR.sd)
+snp.data <- data.frame(cbind(QTR, QTL))
+
+# Graficar
+
+p <- ggplot(snp.data, aes(x = factor(QTL), y = QTR))
+p + geom_point() + xlab("Reference allele count")
+```
+
+
+```{r}
+# Estimacion del efecto mediante regresion
+par(mfrow=c(1,1)) 
+lm.qtl <- lm(QTR ~ QTL)
+plot(QTL,QTR,main="Phenotype as a funtion of genotype")
+abline(lm(QTR~QTL), cex=0.9, col="red")
+anova(lm.qtl)
+summary(lm.qtl)
+```
+
+# EJERCICIO
+# Simule un QTL con sobredominancia
+# Simule un SNP no ligado al QTL
+# Simule diferentes frecuencias del alelo (AF <- (0.01 - 0.5)
+
+
+## rrBLUP
+
+rrBLUP: Software for genomic prediction with the RR-BLUP mixed model (Endelman 2011).
+
+# Simulación GWAS contenida en documentación de software rrBLUP con modificaciones
+
+```{r}
+# 1. Genera población de 200 individuos con 1000 SNP cada uno
+
+M <- matrix(rep(0,200*1000),1000,200)
+for (i in 1:200) {
+  M[,i] <- ifelse(runif(1000)<0.5,-1,1)
+}
+colnames(M) <- 1:200
+geno <- data.frame(marker=1:1000,chrom=rep(1,1000),pos=1:1000,M,check.names=FALSE)
+
+head(geno)
+dim(geno)
+
+write.table(geno, file = "geno.txt", sep = " ", col.names = TRUE)
+
+```
+
+```{r}
+# Construye vector de efectos fijos (u) para 5 marcadores y vector de efectos aleatorios (g) para cada individuo.
+
+QTL <- 100*(1:5)
+u <- rep(0,1000)
+u[QTL] <- 1
+table(u)
+g <- as.vector(crossprod(M,u))
+hist(g)
+```
+
+```{r}
+# Construye vector aleatorio de fenotipos con heredabilidad 0.5  
+
+h2 <- 0.5
+y <- g + rnorm(200,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+hist(y)
+
+pheno <- data.frame(line=1:200,y=y)
+dim(pheno)
+head(pheno)
+```
+
+```{r}
+# Ejecuta análisis de asociación genomica GWAS basado en modelo lineal mixto
+
+scores <- GWAS(pheno,geno,plot=TRUE)
+```
+
+# TAREA
+# Simule 10 marcadores asociados al rasgo con valores de heredabilidad de 0.1, 0.5 y 0.9.
+# Compare resultados
+
+# Simulación SELECCIÓN GENOMICA contenida en documentación de software rrBLUP
+
+```{r}
+# 1. Genera población de 200 individuos con 1000 SNP cada uno / animales están en filas y marcadores en columnas
+Marker <- matrix(rep(0,200*1000),200,1000)
+for (i in 1:200) {
+  Marker[i,] <- rbinom(1000,2,0.5)-1
+}
+rownames(Marker) <- 1:200
+dim(Marker)
+
+```
+
+```{r}
+# Crea matriz de parentesco aditivo
+A <- A.mat(Marker) 
+dim(A)
+hist(A)
+d <- diag(A)
+d
+hist(d)
+```
+
+```{r}
+# Crea vector de efectos geneticos aletorios
+u <- rnorm(1000)
+hist(u)
+g <- as.vector(crossprod(t(Marker),u))
+hist(g)
+
+# Crea vector de fenotipos con heredabilidad 0.5
+h2 <- 0.5  #heritability
+y <- g + rnorm(200,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+hist(y)
+data <- data.frame(pheno=y,gid=1:200)
+```
+
+
+
+```{r}
+# Predicción del valor genotipico basado en matriz de parentesco genético aditivo
+data <- data.frame(pheno=y,gid=1:200)
+ans <- kin.blup(data=data,geno="gid",pheno="pheno",K=A, GAUSS=FALSE)
+
+hist(ans$g, main="Estimación del valor genomico GBLUP")
+plot(data$pheno, ans$g, main="Correlación of Pheno y GBLUP h2=0.5", xlab="Phenotype", ylab="GBLUP")
+accuracy <- cor(g,ans$g)
+text(-80,40, "accuracy=0.714")
+```
+
+# TAREA
+# Simule vector de fenotipos valores de heredabilidad de 0.1 y 0.9.
+# Compare resultados
+
+**Jeffrey B. Endelman 2011.** Ridge Regression and Other Kernels for Genomic Selection with R Package rrBLUP. https://doi.org/10.3835/plantgenome2011.08.0024
