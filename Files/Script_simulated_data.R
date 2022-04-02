@@ -1,11 +1,20 @@
+# Scrip learnQTL: Simula marcadores genéticos con (QTL) y sin asociación a un rasgo cuantitativo. 
+# Dr. José Gallardo Matus y Dra. María Angélica Rueda
+# Pontificia Universidad Católica de Valparaíso
+# Abril 2022
+
+# Habilita paquetes
 library(ggplot2)
 library(xlsx)
 library(dplyr)
 library(readxl)
+library(tidyr) # Para manipular datos
+
+# Remover objetos de la lista
+rm(list=ls())
 
 
 # Simulating genotype data
-
 set.seed(2022)
 genotypes_1 <- sample(c("CC","TC","TT"), size = 1000, replace = TRUE)
 genotypes_2 <- sample(c("CC","AC","AA"), size = 1000, replace = TRUE)
@@ -44,74 +53,29 @@ pheno_data_WFE <- data.frame(ID,WFE)
 # Database with molecular markers and phenotype information
 data_all_MM <- data.frame(ID,MM,WFE)
 
-# Save the dataset
-write.xlsx (data_all_MM, file="data_all_MM.xlsx", row.names = FALSE)
+# From messy data to tidy data
+tidy_all_MM <- data_all_MM %>% gather("Marcador","Genotipo",2:11)
 
-# Load the database
-data_all_MM <- read_excel("data_all_MM.xlsx")
+# Save the dataset
+write.xlsx (tidy_all_MM , file="tidy_all_MM.xlsx", row.names = FALSE)
 
 # Database with genotypes and phenotype information
 data_all_G <- data.frame(ID,G,WFE)
 
+# From messy data to tidy data
+tidy_all_G <- data_all_G %>% gather("Marcador","Genotipo",2:11)
+class(tidy_all_G)
 # Save the dataset
-write.xlsx (data_all_G, file="data_all_G.xlsx",row.names = FALSE)
+write.xlsx(tidy_all_G, file="tidy_all_G.xlsx",row.names = FALSE)
 
-# Load the database
-data_all_G <- read_excel("data_all_G.xlsx")
+# Calcula y exporta frecuencia
+Freq_G <- tidy_all_G %>%
+  group_by(Marcador, Genotipo) %>%
+  summarize(n=n()) %>%
+  mutate(freq = n/sum(n))
+Freq_G <- as.data.frame(Freq_G)
+class(Freq_G)
 
-# QTLs frequency
-Frec_M1<- data_all_G%>%
-      group_by(M1)%>%
-      summarise(n= n())
-
-Frec_M2<- data_all_G%>%
-          group_by(M2)%>%
-          summarise(n= n())
-
-Frec_M3<- data_all_G%>%
-          group_by(M3)%>%
-          summarise(n= n())
-
-Frec_M4<- data_all_G%>%
-          group_by(M4)%>%
-          summarise(n= n())
-
-Frec_M5<- data_all_G%>%
-          group_by(M5)%>%
-          summarise(n= n())
-
-Frec_M6<- data_all_G%>%
-          group_by(M6)%>%
-          summarise(n= n())
-
-Frec_M7<- data_all_G%>%
-          group_by(M7)%>%
-          summarise(n= n())
-
-Frec_M8<- data_all_G%>%
-          group_by(M8)%>%
-          summarise(n= n())
-
-Frec_M9<- data_all_G%>%
-          group_by(M9)%>%
-          summarise(n= n())
-
-Frec_M10<- data_all_G%>%
-           group_by(M10)%>%
-           summarise(n= n())
-
-# Barplot for each QTL
-ggplot(data = Frec_M2, aes(x = M2, y = n,fill=M2)) +
-  geom_col(position = position_dodge())+labs(title="QTL2", x= "Genotypes", y="Number of fish")+ 
-  theme(text = element_text(size=20))+
-  theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme_classic(base_size=15)+
-  theme(plot.title = element_text(size = 15, face = "bold"))+
-  theme(axis.text.x = element_text(size = 15,face="bold",colour="black"))+
-  theme(axis.text.y = element_text(size = 15,face="bold",colour="black"))+
-  scale_y_continuous(limits=c(0,450))+
-  theme(legend.position="none")+geom_text(aes(label =n),vjust =-0.5,position = position_dodge(0.9),size =5)+
-  scale_x_discrete(labels=c("CC","TC","TT"))+
-  scale_fill_manual(values = c("lightgray", "deepskyblue4", "coral"))+
-  geom_segment(aes(x =1,y =310,xend =3,yend =350),
-                arrow = arrow(length = unit(0.5,"cm")),size = 2)
+# Save the dataset
+write.xlsx(Freq_G, file="Freq_G.xlsx",row.names = FALSE)
 
