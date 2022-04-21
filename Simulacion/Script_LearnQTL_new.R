@@ -28,7 +28,7 @@ ggplot(tidy_all_G, aes(WFE))+
        y="Frecuencia") 
 
 # Graph boxplot
-tidy_all_G %>% filter(Marcador=="M1") %>%
+tidy_all_G %>% filter(Marcador=="M2") %>%
   ggplot(aes(x=as.factor(Genotipo), y=WFE))+
   geom_boxplot(fill="deepskyblue4")+
   labs(title="Boxplot", x="Genotipo", y="Fenotipo") 
@@ -44,5 +44,6 @@ Freq_G  %>% filter(Marcador=="M1") %>%
   theme(plot.title = element_text(size = 15, face = "bold"))+
   theme(axis.text.x = element_text(size = 15,face="bold",colour="black"))+
   theme(axis.text.y = element_text(size = 15,face="bold",colour="black"))+
-  scale_y_continuous(limits=c(0,600))+
-  theme(legend.position="none")+geom_text(aes(label =n),vjust =-0.5,position = position_dodge(0.9),size =5)
+  scale_y_continuous(limits=c(0,900))+
+  theme(legend.position="none")+geom_text(aes(label =n),vjust =-0.5,position = position_dodge(0.9),size =5)+
+  scale_fill_manual(values = c("lightgray", "deepskyblue4", "coral"))

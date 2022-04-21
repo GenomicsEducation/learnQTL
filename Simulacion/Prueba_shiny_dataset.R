@@ -17,7 +17,7 @@ rm(list=ls())
 set.seed(2022)
 M <- matrix(rep(0,10*1000),1000,10)
 for (i in 1:10) {
-  M[,i] <- rbinom(1000,2,0.5)
+  M[,i] <- rbinom(1000,2,0.7)
 }
 
 colnames(M) <- c("M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9", "M10")
@@ -29,7 +29,7 @@ geno <- data.frame(M,check.names=FALSE)
 # Positive associated marker with phenotype data
 set.seed(2022)
 wfe_means_pos <- c(5500, 5750, 6000)
-wfe_sd <- 1190
+wfe_sd <- 500
 
 wfe_pos <- rnorm(1000, wfe_means_pos[factor(M)],wfe_sd)
 
